@@ -1,8 +1,9 @@
-from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
-from rest_framework_simplejwt.views import TokenObtainPairView
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer,TokenRefreshSerializer
+
 
 from rest_framework import serializers
 from accounts.models import User
+from rest_framework_simplejwt.tokens import RefreshToken, Token,AccessToken
 
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
@@ -13,8 +14,14 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
         # Add custom claims
         token['first_name'] = user.first_name
         # ...
-
+        
         return token
+    
+# User Serializer
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        exclude = ('password',)
     
 
 class UserRegisterSerializer(serializers.ModelSerializer):
