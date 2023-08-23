@@ -3,7 +3,8 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import status
 from accounts.models import User,UserProfile
-from .serializers import UserRegisterSerializer,MyTokenObtainPairSerializer,UserSerializer,UserDetailsUpdateSerializer
+from .serializers import UserRegisterSerializer,MyTokenObtainPairSerializer,UserSerializer,UserDetailsUpdateSerializer,UserProfileSerializer,AdminUserSerializer
+from rest_framework.generics import ListCreateAPIView
 
 from rest_framework.exceptions import AuthenticationFailed,ParseError
 from django.contrib.auth import authenticate
@@ -13,6 +14,8 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework import serializers
 from rest_framework.parsers import MultiPartParser, FormParser
 
+from rest_framework.pagination import PageNumberPagination
+from rest_framework.filters import SearchFilter
 
 
 class getAccountsRoutes(APIView):
@@ -117,3 +120,13 @@ class UserDetailsUpdate(APIView):
         else:
             print('error', user_update_details_serializer.errors)
             return Response(user_update_details_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        
+        
+###################### ADMIN SIDE ####################
+
+class AdminUserListCreateView(ListCreateAPIView):
+    queryset = User.objects.all()
+    serializer_class = AdminUserSerializer
+    pagination_class = PageNumberPagination
+    filter_backends = [SearchFilter]
+    search_fields = ['first_name', 'last_name', 'email', 'phone_number']

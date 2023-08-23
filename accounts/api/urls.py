@@ -15,6 +15,11 @@ urlpatterns = [
     path("user/details/update", views.UserDetailsUpdate.as_view(), name="user-details-update"),
     
     
+    
+    
+    ######################## ADMIN SIDE ##########
+    path('admin/users/', views.AdminUserListCreateView.as_view(), name='admin-user-list-create'),
+    
     path("current/", views.UserView.as_view(), name="user-current"),
     
     path('token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
