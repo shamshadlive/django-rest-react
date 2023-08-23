@@ -2,7 +2,7 @@ from rest_framework_simplejwt.serializers import TokenObtainPairSerializer,Token
 
 
 from rest_framework import serializers
-from accounts.models import User
+from accounts.models import User,UserProfile
 from rest_framework_simplejwt.tokens import RefreshToken, Token,AccessToken
 
 
@@ -22,6 +22,11 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         exclude = ('password',)
+        
+class UserDetailsUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserProfile
+        fields = ['profile_pic']
     
 
 class UserRegisterSerializer(serializers.ModelSerializer):

@@ -1,16 +1,17 @@
 import React from 'react'
 import { useSelector,useDispatch } from 'react-redux';
 import { Link, useNavigate } from "react-router-dom";
-import { set_User } from '../../../Redux/userBasic/userBasicSlice';
+import { set_Authentication } from '../../../Redux/authentication/authenticationSlice';
 import userimg from '../../../images/user.png'
 function UserHeader() {
-  const user = useSelector(state => state.user)
+  const authentication_user = useSelector(state => state.authentication_user)
+  const user_basic_details = useSelector(state => state.user_basic_details)
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const logout = ()=>{
     localStorage.clear();
     dispatch(
-      set_User({
+      set_Authentication({
         name: null,
         isAuthenticated: false
       })
@@ -40,17 +41,12 @@ function UserHeader() {
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
           {/* <!-- Navbar brand --> */}
           <Link className="navbar-brand mt-2 mt-lg-0" to='/'>
-            <img
-              src="https://mdbcdn.b-cdn.net/img/logo/mdb-transaprent-noshadows.webp"
-              height="15"
-              alt="MDB Logo"
-              loading="lazy"
-            />
+            LOGO
           </Link>
         {/* //  <!-- Left links --> */}
           <ul className="navbar-nav me-auto mb-2 mb-lg-0">
             <li className="nav-item">
-            {user.isAuthenticated?<Link className="nav-link" to='/profile'>{user.name}</Link>: <Link className="nav-link" to='/login'>Login</Link>}
+            {authentication_user.isAuthenticated?<Link className="nav-link" to='/profile'>{authentication_user.name}</Link>: <Link className="nav-link" to='/login'>Login</Link>}
               
         
             </li>
@@ -75,7 +71,7 @@ function UserHeader() {
               aria-expanded="false"
             >
               <img
-                src={userimg}
+                src={authentication_user.isAuthenticated&&user_basic_details.profile_pic?user_basic_details.profile_pic:userimg}
                 className="rounded-circle"
                 height="25"
                 alt="Black and White Portrait of Link Man"
@@ -91,7 +87,7 @@ function UserHeader() {
               </li>
              
               <li>
-              {!user.isAuthenticated?<Link className="dropdown-item" to='/login'>Login</Link>: 
+              {!authentication_user.isAuthenticated?<Link className="dropdown-item" to='/login'>Login</Link>: 
                <button className="dropdown-item" onClick={logout}>Logout</button>}
              
               </li>

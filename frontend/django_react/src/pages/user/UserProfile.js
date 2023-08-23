@@ -1,8 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import userimg from '../../images/user.png'
+import { set_Authentication } from "../../Redux/authentication/authenticationSlice"; 
+import { useDispatch ,useSelector} from 'react-redux';
 
 function UserProfile() {
+
+  const dispatch = useDispatch();
+  const authentication_user = useSelector(state => state.authentication_user)
 
   const baseURL='http://127.0.0.1:8000'
   const token = localStorage.getItem('access');
@@ -16,7 +21,6 @@ function UserProfile() {
       }})
         .then(res => {
             setUserDetails(res.data)
-            console.log(res.data);
           })
     }
     catch (error) {
@@ -26,11 +30,47 @@ function UserProfile() {
 
   };
 
+  const [userUpdateDetails, setUserUpdateDetails] = useState({
+    image:null
+  })
+
+  const handleImageChange = (e) => {
+    setUserUpdateDetails({
+      image: e.target.files[0]
+    })
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log(userUpdateDetails);
+    let form_data = new FormData();
+    form_data.append('profile_pic', userUpdateDetails.image, userUpdateDetails.image.name);
+    let url = baseURL+'/api/accounts/user/details/update';
+    axios.post(url, form_data, {
+      headers: {
+        'content-type': 'multipart/form-data',
+        'authorization': `Bearer ${token}`,
+      }
+    })
+        .then(res => {
+          dispatch(
+            set_Authentication({
+              name: '',
+              isAuthenticated: false
+            })
+          );
+
+        })
+        .catch(err => console.log(err))
+ 
+
+  }
+
  const [userDetails, setUserDetails] = useState(null)
   useEffect(() => {
     fetchUserData();
   
-  }, [])
+  }, [authentication_user])
   
 
 
@@ -55,9 +95,20 @@ function UserProfile() {
             <p className="text-muted mb-2">{userDetails?.phone_number} <span className="mx-2"></span> </p>
         
             
-            <button type="button" className="btn btn-primary btn-rounded btn-lg">
+            <form onSubmit={handleSubmit}>
+
+            <input type="file"
+                   id="image"
+                   accept="image/png, image/jpeg" className='form-control my-2'  onChange={handleImageChange} required/>
+
+            <button type="submit" className="btn btn-primary btn-rounded btn-lg">
               Update Profile Pic
             </button>
+
+          
+         
+
+            </form>
           
           </div>
         </div>

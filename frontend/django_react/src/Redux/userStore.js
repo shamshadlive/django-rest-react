@@ -1,9 +1,11 @@
 import {configureStore} from '@reduxjs/toolkit'
-import userBasicReducer from './userBasic/userBasicSlice'
+import authenticationSliceReducer from './authentication/authenticationSlice'
+import userBasicDetailsSliceReducer from './userBasicDetails/userBasicDetailsSlice'
 
 
 export default configureStore({
     reducer:{
-        user:userBasicReducer
+        authentication_user:authenticationSliceReducer,
+        user_basic_details:userBasicDetailsSliceReducer
     }
 })

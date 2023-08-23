@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Link ,useLocation,useNavigate} from 'react-router-dom'
 import axios from 'axios'
 import { useDispatch } from 'react-redux';
-import { set_User } from '../../Redux/userBasic/userBasicSlice';
+import { set_Authentication } from '../../Redux/authentication/authenticationSlice';
 import jwt_decode from "jwt-decode";
 
 
@@ -37,7 +37,7 @@ function UserLogin() {
         localStorage.setItem('access', res.data.access)
         localStorage.setItem('refresh', res.data.refresh)
         dispatch(
-          set_User({
+          set_Authentication({
             name: jwt_decode(res.data.access).first_name,
             isAuthenticated: true
           })
