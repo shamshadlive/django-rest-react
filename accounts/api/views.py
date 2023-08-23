@@ -62,6 +62,7 @@ class LoginView(APIView):
         content = {
                      'refresh': str(refresh),
                      'access': str(refresh.access_token),
+                     'isAdmin':user.is_superuser,
                 }
         
         return Response(content,status=status.HTTP_200_OK)

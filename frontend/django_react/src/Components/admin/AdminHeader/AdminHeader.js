@@ -1,8 +1,27 @@
 import React from 'react'
 import { Link, useNavigate } from "react-router-dom";
 import userimg from '../../../images/user.png'
+import { useDispatch, useSelector } from 'react-redux';
+import { set_Authentication } from '../../../Redux/authentication/authenticationSlice';
 
 function AdminHeader() {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const authentication_user = useSelector(state => state.authentication_user)
+  const user_basic_details = useSelector(state => state.user_basic_details)
+  const logout = ()=>{
+    localStorage.clear();
+    dispatch(
+      set_Authentication({
+        name: null,
+        isAuthenticated: false,
+        isAdmin:false
+      })
+    );
+    navigate('/admincontrol/login')
+
+  }
+
   return (
     // <!-- Navbar -->
     <nav className="navbar navbar-expand-lg navbar-light bg-light">
@@ -24,7 +43,7 @@ function AdminHeader() {
         {/* <!-- Collapsible wrapper --> */}
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
           {/* <!-- Navbar brand --> */}
-          <Link className="navbar-brand mt-2 mt-lg-0" to='/'>
+          <Link className="navbar-brand mt-2 mt-lg-0" to='/admincontrol'>
             ADMIN
           </Link>
         {/* //  <!-- Left links --> */}
@@ -54,7 +73,7 @@ function AdminHeader() {
               aria-expanded="false"
             >
               <img
-                src={userimg}
+               src={authentication_user.isAuthenticated&&user_basic_details.profile_pic?user_basic_details.profile_pic:userimg}
                 className="rounded-circle"
                 height="25"
                 alt="Black and White Portrait of Link Man"
@@ -70,7 +89,8 @@ function AdminHeader() {
               </li>
              
               <li>
-              
+              {!authentication_user.isAuthenticated?<Link className="dropdown-item" to='/admincontrol/login'>Login</Link>: 
+               <button className="dropdown-item" onClick={logout}>Logout</button>}
              
               </li>
               

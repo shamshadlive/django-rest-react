@@ -7,13 +7,15 @@ export const authenticationSlice = createSlice(
     initialState: {
       name: null,
       isAuthenticated: false,
+      isAdmin: false,
     },
     reducers: {
       set_Authentication: (state, action) => {
         state.name = action.payload.name;
         state.isAuthenticated = action.payload.isAuthenticated;
-     
-      }
+        state.isAdmin = action.payload.isAdmin
+      },
+  
     }
 
 

@@ -1,17 +1,23 @@
 import React, { useEffect, useState } from 'react';
 import { Navigate } from 'react-router-dom';
-import isAuthUser from '../utils/isAuthUser';
+import isAuthAdmin from '../utils/isAuthAdmin';
 
 
 function AdminPrivateRoute({ children }) {
   
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState({
+    'is_authenticated' : false,
+    'is_admin' : false,
+  });
   const [isLoading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
-      const authInfo = await isAuthUser();
-      setIsAuthenticated(authInfo.isAuthenticated);
+      const authInfo = await isAuthAdmin();
+      setIsAuthenticated({
+        'is_authenticated' : authInfo.isAuthenticated,
+        'is_admin' : authInfo.isAdmin,
+      });
       setLoading(false);
     };
 
@@ -23,9 +29,14 @@ function AdminPrivateRoute({ children }) {
     return <div>Loading...</div>;
   }
 
-  if (!isAuthenticated) {
+  if(!isAuthenticated.is_authenticated)
+  {
+    return <Navigate to="/admincontrol/login" />;
+  }
+
+  if ((!isAuthenticated.is_admin)) {
     // If not authenticated, redirect to login page with the return URL
-    return <Navigate to="/login" />;
+    return <Navigate to="/admincontrol/login" />;
   }
 
   // If authenticated, render the child components

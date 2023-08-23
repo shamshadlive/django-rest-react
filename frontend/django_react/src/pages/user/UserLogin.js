@@ -36,10 +36,12 @@ function UserLogin() {
       if(res.status === 200){
         localStorage.setItem('access', res.data.access)
         localStorage.setItem('refresh', res.data.refresh)
+        console.log(res.data);
         dispatch(
           set_Authentication({
             name: jwt_decode(res.data.access).first_name,
-            isAuthenticated: true
+            isAuthenticated: true,
+            isAdmin:res.data.isAdmin
           })
         );
         navigate('/')

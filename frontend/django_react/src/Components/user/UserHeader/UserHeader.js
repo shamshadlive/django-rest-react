@@ -13,7 +13,8 @@ function UserHeader() {
     dispatch(
       set_Authentication({
         name: null,
-        isAuthenticated: false
+        isAuthenticated: false,
+        isAdmin:false
       })
     );
     navigate('/')
