@@ -2,6 +2,7 @@ import React from 'react'
 import { useSelector,useDispatch } from 'react-redux';
 import { Link, useNavigate } from "react-router-dom";
 import { set_User } from '../../../Redux/userBasic/userBasicSlice';
+import userimg from '../../../images/user.png'
 function UserHeader() {
   const user = useSelector(state => state.user)
   const navigate = useNavigate();
@@ -74,7 +75,7 @@ function UserHeader() {
               aria-expanded="false"
             >
               <img
-                src="https://mdbcdn.b-cdn.net/img/new/avatars/2.webp"
+                src={userimg}
                 className="rounded-circle"
                 height="25"
                 alt="Black and White Portrait of Link Man"
@@ -88,10 +89,13 @@ function UserHeader() {
               <li>
                 <Link className="dropdown-item" to='/profile'>My profile</Link>
               </li>
-
+             
               <li>
-                <button className="dropdown-item" onClick={logout}>Logout</button>
+              {!user.isAuthenticated?<Link className="dropdown-item" to='/login'>Login</Link>: 
+               <button className="dropdown-item" onClick={logout}>Logout</button>}
+             
               </li>
+              
 
              {/*  <li>
                 <Link className="dropdown-item" href="#">Logout</Link>

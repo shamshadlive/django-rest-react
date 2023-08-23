@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
+import userimg from '../../images/user.png'
 
 function UserProfile() {
 
@@ -15,6 +16,7 @@ function UserProfile() {
       }})
         .then(res => {
             setUserDetails(res.data)
+            console.log(res.data);
           })
     }
     catch (error) {
@@ -45,7 +47,7 @@ function UserProfile() {
         <div className="card" style={{borderRadius:'15px'}}>
           <div className="card-body text-center">
             <div className="mt-3 mb-4">
-              <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava2-bg.webp"
+              <img src={userDetails?userDetails.profile_pic?userDetails.profile_pic:userimg:userimg}
                 className="rounded-circle img-fluid" style={{width: '100px'}} alt='img'/>
             </div>
             <h4 className="mb-2">{userDetails?.first_name}</h4>
