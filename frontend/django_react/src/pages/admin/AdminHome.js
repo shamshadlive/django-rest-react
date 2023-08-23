@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import userimg from "../../images/user.png";
+import { Link } from "react-router-dom";
 
 function AdminHome() {
   const baseURL = "http://127.0.0.1:8000";
@@ -46,17 +47,19 @@ function AdminHome() {
           className="form-control"
           onChange={(e) => handleSearch(e.target.value)}
         />
-
+        
+        <Link className="btn btn-dark my-3" to='user/create'>Create User</Link>
         <table className="table align-middle mb-0 bg-white table-responsive">
           <thead className="bg-light">
             <tr>
               <th>Name</th>
               <th>Phone</th>
+              <th>Active Status</th>
               <th>Actions</th>
             </tr>
           </thead>
           <tbody>
-            {users == "" && <p>No Users Found Your Match</p>}
+            {users == "" && <tr><td>No Users Found Your Match</td></tr>}
             {users.map((user) => (
               <tr key={user.id}>
                 <td>
@@ -83,15 +86,20 @@ function AdminHome() {
                     {user.phone_number}
                   </span>
                 </td>
+                <td>
+                <span className={`badge rounded-pill d-inline ${user.is_active ? 'badge-success' : 'badge-danger'}`}>
+                  {user.is_active ? 'Active' : 'Not Active'}
+                </span>
+                </td>
 
                 <td>
-                  <button
+                  <Link
                     type="button"
                     className="btn btn-link btn-rounded btn-sm fw-bold"
-                    data-mdb-ripple-color="dark"
+                    to={`user/update/${user.id}`}
                   >
                     Edit
-                  </button>
+                  </Link>
                 </td>
               </tr>
             ))}

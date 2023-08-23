@@ -19,6 +19,9 @@ urlpatterns = [
     
     ######################## ADMIN SIDE ##########
     path('admin/users/', views.AdminUserListCreateView.as_view(), name='admin-user-list-create'),
+    path('admin/users/<int:id>/', views.AdminUserRetrieveView.as_view(), name='admin-user-list-single'),
+    path('admin/users/update/<int:id>/', views.AdminUserUpdateView.as_view(), name='admin-user-list-single-update'),
+    path('admin/users/delete/<int:id>/', views.AdminUserDeleteView.as_view(), name='admin-user-list-single-delete'),
     
     path("current/", views.UserView.as_view(), name="user-current"),
     

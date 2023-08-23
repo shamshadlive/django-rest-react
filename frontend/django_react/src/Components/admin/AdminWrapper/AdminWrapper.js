@@ -11,6 +11,8 @@ import { set_Authentication } from '../../../Redux/authentication/authentication
 import { set_user_basic_details } from '../../../Redux/userBasicDetails/userBasicDetailsSlice';
 import axios from 'axios';
 import isAuthAdmin from '../../../utils/isAuthAdmin';
+import AdminCreateUser from '../../../pages/admin/AdminCreateUser';
+import AdminUpdateUser from '../../../pages/admin/AdminUpdateUser';
 
 function AdminWrapper() {
   const dispatch = useDispatch();
@@ -63,6 +65,8 @@ function AdminWrapper() {
       <Routes>
         <Route path="login" element={<AdminLogin />} />
         <Route path="/" element={<AdminPrivateRoute><AdminHome /></AdminPrivateRoute>} />
+        <Route path="/user/create" element={<AdminPrivateRoute><AdminCreateUser /></AdminPrivateRoute>} />
+        <Route path="/user/update/:id" element={<AdminPrivateRoute><AdminUpdateUser /></AdminPrivateRoute>} />
       </Routes>
       <AdminFooter />
     </>

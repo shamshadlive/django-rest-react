@@ -17,6 +17,9 @@ from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.filters import SearchFilter
 
+from rest_framework.generics import RetrieveAPIView
+from rest_framework.generics import UpdateAPIView
+from .serializers import UserUpdateSerializer
 
 class getAccountsRoutes(APIView):
      def get(self, request, format=None):
@@ -125,8 +128,28 @@ class UserDetailsUpdate(APIView):
 ###################### ADMIN SIDE ####################
 
 class AdminUserListCreateView(ListCreateAPIView):
-    queryset = User.objects.all()
+    print("++++")
+    queryset = User.objects.all().order_by('-date_joined')  
     serializer_class = AdminUserSerializer
     pagination_class = PageNumberPagination
     filter_backends = [SearchFilter]
     search_fields = ['first_name', 'last_name', 'email', 'phone_number']
+
+class AdminUserRetrieveView(RetrieveAPIView):
+    queryset = User.objects.all()
+    serializer_class = AdminUserSerializer
+    lookup_field = 'id'
+    
+class AdminUserUpdateView(UpdateAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserUpdateSerializer
+    lookup_field = 'id'
+    
+class AdminUserDeleteView(APIView):
+    def delete(self, request, id):
+        try:
+            user = User.objects.get(id=id)
+            user.delete()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        except User.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
