@@ -1,9 +1,13 @@
 import React from 'react'
 
 import { useSelector } from 'react-redux'
+import { Link ,useNavigate} from 'react-router-dom'
+
+
 
 function UserHome() {
 
+  const navigate = useNavigate()
   const authentication_user = useSelector(state => state.authentication_user)
  
   return (
@@ -32,7 +36,11 @@ function UserHome() {
       eligendi quisquam doloremque vero ex debitis veritatis placeat unde animi laborum
       sapiente illo possimus, commodi dignissimos obcaecati illum maiores corporis.
     </p>
-    <button type="button" className="btn btn-primary">{authentication_user.isAuthenticated?<>Go To Profile  ! </>:<>Login To Read More</>}</button>
+    {authentication_user.isAuthenticated?<>
+      <Link type="button" className="btn btn-primary" to='/profile'>Go To Profile  ! </Link></>
+      :<><Link type="button" className="btn btn-primary" to='/login'> Login To Read More </Link></>}
+    
+   
   </div>
 </div>
 
